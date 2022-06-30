@@ -4,7 +4,10 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace FirefighterStats_API;
+namespace FirefighterStats;
+
+using FirefighterStats.Data;
+using Microsoft.EntityFrameworkCore;
 
 public static class Program
 {
@@ -12,7 +15,10 @@ public static class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        if (builder.Environment.IsDevelopment())
+        {
+            _ = builder.Services.AddDbContext<ApplicationDbContext>(static options => options.UseInMemoryDatabase("FirefighterStats"));
+        }
 
         _ = builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

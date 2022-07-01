@@ -20,6 +20,8 @@ public static class Program
             _ = builder.Services.AddDbContext<ApplicationDbContext>(static options => options.UseInMemoryDatabase("FirefighterStats"));
         }
 
+        _ = builder.Services.AddAutoMapper(typeof(Program));
+
         _ = builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         _ = builder.Services.AddEndpointsApiExplorer();

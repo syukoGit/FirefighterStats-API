@@ -46,9 +46,9 @@ public class PaySlipsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<PaySlipDTO>> Post([FromBody] PaySlipCreationDTO paySlipCreation)
+    public async Task<ActionResult<PaySlipDTO>> Create([FromBody] PaySlipCreateOrUpdateDTO paySlipCreate)
     {
-        var paySlip = this.mapper.Map<PaySlip>(paySlipCreation);
+        var paySlip = this.mapper.Map<PaySlip>(paySlipCreate);
 
         this.context.PaySlips.Add(paySlip);
         await this.context.SaveChangesAsync();
@@ -57,5 +57,28 @@ public class PaySlipsController : ControllerBase
         {
             paySlip.Id,
         }, this.mapper.Map<PaySlipDTO>(paySlip));
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<PaySlipDTO>> Update(int id, [FromBody] PaySlipCreateOrUpdateDTO paySlipUpdate)
+    {
+        if (!await this.context.PaySlips.AsNoTracking().AnyAsync(c => c.Id == id))
+        {
+            return this.NotFound();
+        }
+
+        var paySlip = this.mapper.Map<PaySlip>(paySlipUpdate);
+        paySlip.Id = id;
+
+        this.context.Entry(paySlip).State = EntityState.Modified;
+
+        await this.context.SaveChangesAsync();
+
+        var paySlipDTO = this.mapper.Map<PaySlipDTO>(paySlip);
+
+        return this.CreatedAtAction("Get", new
+        {
+            id,
+        }, paySlipDTO);
     }
 }

@@ -17,9 +17,9 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         this.CreateMap<PaySlip, PaySlipDTO>();
-        this.CreateMap<PaySlipCreationDTO, PaySlip>();
+        this.CreateMap<PaySlipCreateOrUpdateDTO, PaySlip>();
 
         this.CreateMap<PaySlipLine, PaySlipLineDTO>();
-        this.CreateMap<PaySlipLineCreationDTO, PaySlipLine>();
+        this.CreateMap<PaySlipLineCreationOrUpdateDTO, PaySlipLine>();
     }
 }

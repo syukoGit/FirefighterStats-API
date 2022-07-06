@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright project="FirefighterStats-API" file="PaySlipLineCreationDTO.cs" company="syuko">
+//  <copyright project="FirefighterStats-API" file="PaySlipLineCreationOrUpdateDTO.cs" company="syuko">
 //  Copyright (c) syuko. All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
 
 [PublicAPI]
-public class PaySlipLineCreationDTO : IValidatableObject
+public class PaySlipLineCreationOrUpdateDTO : IValidatableObject
 {
     [Required]
     [DataType(DataType.DateTime)]

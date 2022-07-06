@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright project="FirefighterStats-API" file="PaySlipCreationDTO.cs" company="syuko">
+//  <copyright project="FirefighterStats-API" file="PaySlipCreateOrUpdateDTO.cs" company="syuko">
 //  Copyright (c) syuko. All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
@@ -12,9 +12,9 @@ using FirefighterStats.Utils;
 using JetBrains.Annotations;
 
 [PublicAPI]
-public class PaySlipCreationDTO
+public class PaySlipCreateOrUpdateDTO
 {
-    public ICollection<PaySlipLineCreationDTO>? Lines { get; set; }
+    public ICollection<PaySlipLineCreationOrUpdateDTO>? Lines { get; set; }
 
     [Required]
     public EMonth Month { get; set; }

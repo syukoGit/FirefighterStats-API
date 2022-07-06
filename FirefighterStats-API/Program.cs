@@ -6,6 +6,7 @@
 
 namespace FirefighterStats;
 
+using System.Text.Json.Serialization;
 using FirefighterStats.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,8 @@ public static class Program
         }
 
         _ = builder.Services.AddAutoMapper(typeof(Program));
+
+        builder.Services.AddControllers().AddJsonOptions(static c => c.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
         _ = builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

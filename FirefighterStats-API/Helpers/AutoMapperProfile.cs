@@ -16,8 +16,10 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        _ = this.CreateMap<PaySlip, PaySlipDTO>();
+        this.CreateMap<PaySlip, PaySlipDTO>();
+        this.CreateMap<PaySlipCreationDTO, PaySlip>();
 
-        _ = this.CreateMap<PaySlipLine, PaySlipLineDTO>();
+        this.CreateMap<PaySlipLine, PaySlipLineDTO>();
+        this.CreateMap<PaySlipLineCreationDTO, PaySlipLine>();
     }
 }

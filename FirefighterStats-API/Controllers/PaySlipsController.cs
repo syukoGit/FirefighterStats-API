@@ -28,7 +28,7 @@ public class PaySlipsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<PaySlipDTO>>> GetPayslips()
+    public async Task<ActionResult<List<PaySlipDTO>>> Get()
     {
         List<PaySlip> paySlips = await this.context.PaySlips.AsNoTracking().ToListAsync();
 
@@ -36,12 +36,26 @@ public class PaySlipsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<PaySlipDTO>> GetPaySlip(int id)
+    public async Task<ActionResult<PaySlipDTO>> Get(int id)
     {
         PaySlip? paySlip = await this.context.PaySlips.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
 
         return paySlip == null
                    ? this.NotFound()
                    : this.mapper.Map<PaySlipDTO>(paySlip);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<PaySlipDTO>> Post([FromBody] PaySlipCreationDTO paySlipCreation)
+    {
+        var paySlip = this.mapper.Map<PaySlip>(paySlipCreation);
+
+        this.context.PaySlips.Add(paySlip);
+        await this.context.SaveChangesAsync();
+
+        return this.CreatedAtAction("Get", new
+        {
+            paySlip.Id,
+        }, this.mapper.Map<PaySlipDTO>(paySlip));
     }
 }

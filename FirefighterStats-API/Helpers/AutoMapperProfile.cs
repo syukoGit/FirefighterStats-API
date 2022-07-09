@@ -18,8 +18,10 @@ public class AutoMapperProfile : Profile
     {
         this.CreateMap<PaySlip, PaySlipDTO>();
         this.CreateMap<PaySlipCreateOrUpdateDTO, PaySlip>();
+        this.CreateMap<PaySlipPatchUpdateDTO, PaySlip>().ReverseMap();
 
         this.CreateMap<PaySlipLine, PaySlipLineDTO>();
         this.CreateMap<PaySlipLineCreationOrUpdateDTO, PaySlipLine>();
+        this.CreateMap<PaySlipLinePatchUpdateDTO, PaySlipLine>().ReverseMap();
     }
 }

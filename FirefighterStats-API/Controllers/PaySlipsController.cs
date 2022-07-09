@@ -10,6 +10,7 @@ using AutoMapper;
 using FirefighterStats.Data;
 using FirefighterStats.DTO.PaySlip;
 using FirefighterStats.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -79,6 +80,42 @@ public class PaySlipsController : ControllerBase
         return this.CreatedAtAction("Get", new
         {
             id,
+        }, paySlipDTO);
+    }
+
+    [HttpPatch("{id:int}")]
+    public async Task<ActionResult<PaySlipDTO>> Update(int id, [FromBody] JsonPatchDocument<PaySlipPatchUpdateDTO>? patchDocument)
+    {
+        if (patchDocument == null)
+        {
+            return this.BadRequest();
+        }
+
+        PaySlip? paySlipFromDb = this.context.PaySlips.FirstOrDefault(x => x.Id == id);
+
+        if (paySlipFromDb == null)
+        {
+            return this.NotFound();
+        }
+
+        var paySlipDTO = this.mapper.Map<PaySlipPatchUpdateDTO>(paySlipFromDb);
+
+        patchDocument.ApplyTo(paySlipDTO, this.ModelState);
+
+        bool isValid = this.TryValidateModel(paySlipDTO);
+
+        if (!isValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
+
+        this.mapper.Map(paySlipDTO, paySlipFromDb);
+
+        await this.context.SaveChangesAsync();
+
+        return this.CreatedAtAction("Get", new
+        {
+            paySlipFromDb.Id,
         }, paySlipDTO);
     }
 }

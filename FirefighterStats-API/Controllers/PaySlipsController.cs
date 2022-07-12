@@ -47,7 +47,7 @@ public class PaySlipsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<PaySlipDTO>> Create([FromBody] PaySlipCreateOrUpdateDTO paySlipCreate)
+    public async Task<ActionResult<PaySlipDTO>> Post([FromBody] PaySlipCreateOrUpdateDTO paySlipCreate)
     {
         var paySlip = this.mapper.Map<PaySlip>(paySlipCreate);
 
@@ -61,7 +61,7 @@ public class PaySlipsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<PaySlipDTO>> Update(int id, [FromBody] PaySlipCreateOrUpdateDTO paySlipUpdate)
+    public async Task<ActionResult<PaySlipDTO>> Put(int id, [FromBody] PaySlipCreateOrUpdateDTO paySlipUpdate)
     {
         if (!await this.context.PaySlips.AsNoTracking().AnyAsync(c => c.Id == id))
         {
@@ -84,7 +84,7 @@ public class PaySlipsController : ControllerBase
     }
 
     [HttpPatch("{id:int}")]
-    public async Task<ActionResult<PaySlipDTO>> Update(int id, [FromBody] JsonPatchDocument<PaySlipPatchUpdateDTO>? patchDocument)
+    public async Task<ActionResult<PaySlipDTO>> Patch(int id, [FromBody] JsonPatchDocument<PaySlipPatchUpdateDTO>? patchDocument)
     {
         if (patchDocument == null)
         {
@@ -117,5 +117,25 @@ public class PaySlipsController : ControllerBase
         {
             paySlipFromDb.Id,
         }, paySlipDTO);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        bool exist = await this.context.PaySlips.AnyAsync(x => x.Id == id);
+
+        if (!exist)
+        {
+            return this.NotFound();
+        }
+
+        this.context.Remove(new PaySlip
+        {
+            Id = id,
+        });
+
+        await this.context.SaveChangesAsync();
+
+        return this.Ok();
     }
 }

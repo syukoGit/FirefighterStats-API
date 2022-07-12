@@ -16,3 +16,6 @@ dotnet_diagnostic.IDE0007.severity = none
 
 # IDE0008: Utiliser un type explicite
 dotnet_diagnostic.IDE0008.severity = none
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none

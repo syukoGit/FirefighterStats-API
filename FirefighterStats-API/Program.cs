@@ -6,6 +6,7 @@
 
 namespace FirefighterStats;
 
+using System.Text.Json.Serialization;
 using FirefighterStats.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,28 +18,32 @@ public static class Program
 
         if (builder.Environment.IsDevelopment())
         {
-            _ = builder.Services.AddDbContext<ApplicationDbContext>(static options => options.UseInMemoryDatabase("FirefighterStats"));
+            builder.Services.AddDbContext<ApplicationDbContext>(static options => options.UseInMemoryDatabase("FirefighterStats"));
         }
 
-        _ = builder.Services.AddControllers();
+        builder.Services.AddAutoMapper(typeof(Program));
+
+        builder.Services.AddControllers().AddJsonOptions(static c => c.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())).AddNewtonsoftJson();
+
+        builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        _ = builder.Services.AddEndpointsApiExplorer();
-        _ = builder.Services.AddSwaggerGen();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            _ = app.UseSwagger();
-            _ = app.UseSwaggerUI();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
-        _ = app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
-        _ = app.UseAuthorization();
+        app.UseAuthorization();
 
-        _ = app.MapControllers();
+        app.MapControllers();
 
         app.Run();
     }

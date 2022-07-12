@@ -292,7 +292,7 @@
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ReplaceWithStringIsNullOrEmpty/@EntryIndexedValue">ERROR</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ReturnTypeCanBeEnumerable_002EGlobal/@EntryIndexedValue">WARNING</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ReturnTypeCanBeEnumerable_002ELocal/@EntryIndexedValue">WARNING</s:String>
-	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RouteTemplates_002EActionRoutePrefixCanBeExtractedToControllerRoute/@EntryIndexedValue">WARNING</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RouteTemplates_002EActionRoutePrefixCanBeExtractedToControllerRoute/@EntryIndexedValue">DO_NOT_SHOW</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RouteTemplates_002EControllerRouteParameterIsNotPassedToMethods/@EntryIndexedValue">WARNING</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RouteTemplates_002EMethodMissingRouteParameters/@EntryIndexedValue">WARNING</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RouteTemplates_002EParameterConstraintCanBeSpecified/@EntryIndexedValue">WARNING</s:String>
@@ -576,7 +576,12 @@
       &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
   &lt;/TypePattern&gt;&#xD;
-  &lt;TypePattern DisplayName="Default Pattern"&gt;&#xD;
+  &lt;TypePattern DisplayName="Default Pattern" RemoveRegions="All" Priority="150"&gt;&#xD;
+    &lt;TypePattern.Match&gt;&#xD;
+      &lt;Not&gt;&#xD;
+        &lt;InheritsFromType Name="ControllerBase" /&gt;&#xD;
+      &lt;/Not&gt;&#xD;
+    &lt;/TypePattern.Match&gt;&#xD;
     &lt;Entry DisplayName="Public Enums" Priority="100"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;And&gt;&#xD;
@@ -720,7 +725,7 @@
         &lt;And&gt;&#xD;
           &lt;Kind Is="Method" /&gt;&#xD;
           &lt;Access Is="Public" /&gt;&#xD;
-          &lt;HasAttribute Name="HttpPost" /&gt;&#xD;
+          &lt;HasAttribute Name="Microsoft.AspNetCore.Mvc.HttpPostAttribute" /&gt;&#xD;
         &lt;/And&gt;&#xD;
       &lt;/Entry.Match&gt;&#xD;
     &lt;/Entry&gt;&#xD;
@@ -729,7 +734,16 @@
         &lt;And&gt;&#xD;
           &lt;Kind Is="Method" /&gt;&#xD;
           &lt;Access Is="Public" /&gt;&#xD;
-          &lt;HasAttribute Name="HttpPut" /&gt;&#xD;
+          &lt;HasAttribute Name="Microsoft.AspNetCore.Mvc.HttpPutAttribute" /&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Entry.Match&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &lt;Entry DisplayName="HttpPatch methods"&gt;&#xD;
+      &lt;Entry.Match&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;Kind Is="Method" /&gt;&#xD;
+          &lt;Access Is="Public" /&gt;&#xD;
+          &lt;HasAttribute Name="Microsoft.AspNetCore.Mvc.HttpPatchAttribute" /&gt;&#xD;
         &lt;/And&gt;&#xD;
       &lt;/Entry.Match&gt;&#xD;
     &lt;/Entry&gt;&#xD;

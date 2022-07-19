@@ -125,4 +125,21 @@ public class ActivitiesController : ControllerBase
             activityFromDb.Id,
         }, this.mapper.Map<ActivityDTO>(activityFromDb));
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        Activity? activity = await this.context.Activities.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (activity == null)
+        {
+            return this.NotFound();
+        }
+
+        this.context.Remove(activity);
+
+        await this.context.SaveChangesAsync();
+
+        return this.Ok();
+    }
 }

@@ -28,7 +28,9 @@ public class AutoMapperProfile : Profile
 
         this.CreateMap<Intervention, ActivityDTO>();
         this.CreateMap<FirefighterActivity, ActivityDTO>();
-        this.CreateMap<ActivityCreateOrUpdateDTO, Intervention>();
-        this.CreateMap<ActivityCreateOrUpdateDTO, FirefighterActivity>();
+        this.CreateMap<ActivityCreateDTO, Intervention>().ReverseMap();
+        this.CreateMap<ActivityCreateDTO, FirefighterActivity>().ReverseMap();
+        this.CreateMap<ActivityUpdateDTO, Intervention>().ReverseMap();
+        this.CreateMap<ActivityUpdateDTO, FirefighterActivity>().ReverseMap();
     }
 }

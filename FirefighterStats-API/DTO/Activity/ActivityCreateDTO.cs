@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright project="FirefighterStats-API" file="ActivityCreateOrUpdateDTO.cs" company="syuko">
+//  <copyright project="FirefighterStats-API" file="ActivityCreateDTO.cs" company="syuko">
 //  Copyright (c) syuko. All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
@@ -11,7 +11,7 @@ using FirefighterStats.Utils;
 using JetBrains.Annotations;
 
 [PublicAPI]
-public class ActivityCreateOrUpdateDTO : IValidatableObject
+public class ActivityCreateDTO : IValidatableObject
 {
     [Required]
     public EActivityType ActivityType { get; set; }

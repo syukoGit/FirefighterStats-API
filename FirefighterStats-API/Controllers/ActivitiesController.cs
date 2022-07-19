@@ -48,7 +48,7 @@ public class ActivitiesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ActivityDTO>> Post([FromBody] ActivityCreateOrUpdateDTO activityCreate)
+    public async Task<ActionResult<ActivityDTO>> Post([FromBody] ActivityCreateDTO activityCreate)
     {
         Activity activity = activityCreate.ActivityType == EActivityType.FirefighterActivity
                                 ? this.mapper.Map<FirefighterActivity>(activityCreate)
@@ -61,5 +61,33 @@ public class ActivitiesController : ControllerBase
         {
             activity.Id,
         }, this.mapper.Map<ActivityDTO>(activity));
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<ActivityDTO>> Put(int id, [FromBody] ActivityUpdateDTO activityUpdate)
+    {
+        Activity? activityInDb = await this.context.Activities.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+
+        if (activityInDb == null)
+        {
+            return this.NotFound();
+        }
+
+        Activity activity = activityInDb.ActivityType == EActivityType.FirefighterActivity
+                                ? this.mapper.Map<FirefighterActivity>(activityUpdate)
+                                : this.mapper.Map<Intervention>(activityUpdate);
+
+        activity.Id = id;
+
+        this.context.Entry(activity).State = EntityState.Modified;
+
+        await this.context.SaveChangesAsync();
+
+        var activityDTO = this.mapper.Map<ActivityDTO>(activity);
+
+        return this.CreatedAtAction("Get", new
+        {
+            id,
+        }, activityDTO);
     }
 }

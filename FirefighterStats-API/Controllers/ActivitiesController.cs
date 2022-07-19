@@ -12,6 +12,7 @@ using FirefighterStats.DTO.Activity;
 using FirefighterStats.Entities;
 using FirefighterStats.Entities.Activities;
 using FirefighterStats.Utils;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,17 +64,17 @@ public class ActivitiesController : ControllerBase
         }, this.mapper.Map<ActivityDTO>(activity));
     }
 
-    [HttpPut]
+    [HttpPut("{id:int}")]
     public async Task<ActionResult<ActivityDTO>> Put(int id, [FromBody] ActivityUpdateDTO activityUpdate)
     {
-        Activity? activityInDb = await this.context.Activities.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        Activity? activityFromDb = await this.context.Activities.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
 
-        if (activityInDb == null)
+        if (activityFromDb == null)
         {
             return this.NotFound();
         }
 
-        Activity activity = activityInDb.ActivityType == EActivityType.FirefighterActivity
+        Activity activity = activityFromDb.ActivityType == EActivityType.FirefighterActivity
                                 ? this.mapper.Map<FirefighterActivity>(activityUpdate)
                                 : this.mapper.Map<Intervention>(activityUpdate);
 
@@ -89,5 +90,39 @@ public class ActivitiesController : ControllerBase
         {
             id,
         }, activityDTO);
+    }
+
+    [HttpPatch("{id:int}")]
+    public async Task<ActionResult<ActivityDTO>> Patch(int id, [FromBody] JsonPatchDocument<ActivityPatchUpdateDTO>? patchDocument)
+    {
+        if (patchDocument == null)
+        {
+            return this.BadRequest();
+        }
+
+        Activity? activityFromDb = await this.context.Activities.FirstOrDefaultAsync(c => c.Id == id);
+
+        if (activityFromDb == null)
+        {
+            return this.NotFound();
+        }
+
+        var activityDTO = this.mapper.Map<ActivityPatchUpdateDTO>(activityFromDb);
+
+        patchDocument.ApplyTo(activityDTO, this.ModelState);
+
+        if (!this.TryValidateModel(activityDTO))
+        {
+            return this.BadRequest(this.ModelState);
+        }
+
+        this.mapper.Map(activityDTO, activityFromDb);
+
+        await this.context.SaveChangesAsync();
+
+        return this.CreatedAtAction("Get", new
+        {
+            activityFromDb.Id,
+        }, this.mapper.Map<ActivityDTO>(activityFromDb));
     }
 }

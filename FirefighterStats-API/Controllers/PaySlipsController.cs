@@ -116,7 +116,7 @@ public class PaySlipsController : ControllerBase
         return this.CreatedAtAction("Get", new
         {
             paySlipFromDb.Id,
-        }, paySlipDTO);
+        }, this.mapper.Map<PaySlipDTO>(paySlipFromDb));
     }
 
     [HttpDelete("{id:int}")]

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright project="FirefighterStats-API" file="PaySlipLine.cs" company="syuko">
+//  <copyright project="FirefighterStats-API" file="Activity.cs" company="syuko">
 //  Copyright (c) syuko. All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
@@ -7,23 +7,24 @@
 namespace FirefighterStats.Entities;
 
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using FirefighterStats.Utils;
 using JetBrains.Annotations;
 
 [PublicAPI]
-public class PaySlipLine
+public abstract class Activity
 {
-    [ForeignKey(nameof(Activity.Id))]
-    public int ActivityId { get; set; }
+    [Required]
+    public abstract EActivityType ActivityType { get; set; }
+
+    [Required]
+    public DateTime EndDateTime { get; set; }
 
     [Key]
     public int Id { get; set; }
 
-    [ForeignKey(nameof(PaySlip.Id))]
-    public int PaySlipId { get; set; }
-
-    public int? Rate { get; set; }
+    [Required]
+    public DateTime StartDateTime { get; set; }
 
     [Required]
-    public double UnitAmount { get; set; }
+    public string Title { get; set; } = string.Empty;
 }
